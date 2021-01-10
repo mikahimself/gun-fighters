@@ -11,6 +11,7 @@ func process(delta: float) -> void:
 	owner.facing = input_direction
 	var vel = calculate_velocity(delta, input_direction)
 	owner.move_and_collide(vel)
+	owner.check_borders()
 	
 func calculate_velocity(delta: float, _input_direction: Vector2) -> Vector2:
 	_input_direction = _input_direction.normalized()

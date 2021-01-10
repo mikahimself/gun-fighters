@@ -13,6 +13,7 @@ func _ready():
 	for child in get_children():
 		child.state_machine = self
 		state.enter()
+		emit_signal("transitioned", state.name)
 
 func _unhandled_input(event: InputEvent) -> void:
 	state.handle_input(event)

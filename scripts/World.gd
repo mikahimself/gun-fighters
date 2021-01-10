@@ -33,8 +33,9 @@ func create_sand_map():
 	for x in map_size.x:
 		for y in map_size.y:
 			var val = noise.get_noise_2d(x, y)
-			if val < sand_cap:
+			if val < sand_cap or check_edges(x, y):
 				$Navigation2D/TileMapSand.set_cell(x, y, 0)
+				
 	$Navigation2D/TileMapSand.update_bitmask_region(Vector2.ZERO, Vector2(map_size.x, map_size.y))
 
 func create_path_map(): 
@@ -45,7 +46,9 @@ func create_path_map():
 				$TileMapPaths.set_cell(x, y, 0)
 	$TileMapPaths.update_bitmask_region(Vector2.ZERO, Vector2(map_size.x, map_size.y))
 
-
+func check_edges(x: int, y: int) -> bool:
+	return x == 0 or x == map_size.x - 1 or y == 0 or y == map_size.y - 1
+	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
 #	pass

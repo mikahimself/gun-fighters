@@ -1,6 +1,6 @@
 extends "res://scripts/Motion.gd"
 
-var slow_down = 0.25
+var slow_down_time = 0.25
 var slow_down_elapsed = 0
 
 func enter(_msg := {}) -> void:
@@ -15,11 +15,12 @@ func process(delta: float) -> void:
 	
 
 func slow_down(delta) -> void:
-	if slow_down_elapsed < slow_down:
+	if slow_down_elapsed < slow_down_time:
 		slow_down_elapsed += delta
-		owner.speed = lerp(50, 0, slow_down_elapsed / slow_down * 2)
+		owner.speed = lerp(50, 0, slow_down_elapsed / slow_down_time * 2)
 		var vel = owner.speed * delta * owner.facing.normalized()
 		owner.move_and_collide(vel)
+		owner.check_borders()
 	if owner.speed <= 0.15:
 		owner.speed = 0
 		slow_down_elapsed = 0
