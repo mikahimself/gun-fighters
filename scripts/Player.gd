@@ -1,11 +1,12 @@
 extends KinematicBody2D
 
 var myVelocity = Vector2.ZERO
-var max_speed = 100
+var max_speed = 35
 var speed = 0
 var facing := Vector2(1, 0)
-var acceleration = 1
+var acceleration = 0.5
 onready var state_label = $StateLabel
+onready var rays = $Rays.get_children()
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -23,3 +24,8 @@ func check_borders() -> void:
 		position.y = 312
 	if position.y < 8:
 		position.y = 8
+
+func _physics_process(delta: float) -> void:
+	#if ray_right.is_colliding():
+	#	print(ray_right.get_collider().name)
+	pass
