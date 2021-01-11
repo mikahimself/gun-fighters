@@ -10,13 +10,16 @@ func process(delta: float) -> void:
 		return
 	owner.facing = input_direction
 	var vel = calculate_velocity(delta, input_direction)
-	owner.move_and_collide(vel)
+	owner.move_and_slide(vel)
+	for i in owner.get_slide_count():
+		var collision = owner.get_slide_collision(i)
+	
 	owner.check_borders()
 	
 func calculate_velocity(delta: float, _input_direction: Vector2) -> Vector2:
 	_input_direction = _input_direction.normalized()
-	owner.speed = lerp(owner.speed, owner.max_speed, delta * owner.acceleration)
-	return owner.speed * delta * _input_direction
+	owner.speed = lerp(owner.speed, owner.max_speed, owner.acceleration)
+	return owner.speed * _input_direction
 
 func exit():
 	pass
