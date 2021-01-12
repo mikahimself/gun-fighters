@@ -13,7 +13,7 @@ func process(delta: float) -> void:
 	owner.move_and_slide(vel)
 	for i in owner.get_slide_count():
 		var collision = owner.get_slide_collision(i)
-	
+	set_animation(input_direction)
 	owner.check_borders()
 	
 func calculate_velocity(delta: float, _input_direction: Vector2) -> Vector2:
@@ -23,3 +23,13 @@ func calculate_velocity(delta: float, _input_direction: Vector2) -> Vector2:
 
 func exit():
 	pass
+
+func set_animation(input_direction: Vector2):
+	if input_direction.y == 1 and input_direction.x == 0:
+		owner.play_animation("Walk_Down")
+	if input_direction.y == -1 and input_direction.x == 0:
+		owner.play_animation("Walk_Up")
+	if input_direction.x == 1:
+		owner.play_animation("Walk_Right")
+	if input_direction.x == -1:
+		owner.play_animation("Walk_Left")

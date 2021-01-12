@@ -29,3 +29,6 @@ func _physics_process(delta: float) -> void:
 	#if ray_right.is_colliding():
 	#	print(ray_right.get_collider().name)
 	pass
+
+func play_animation(animation: String) -> void:
+	$AnimationPlayer.play(animation)
