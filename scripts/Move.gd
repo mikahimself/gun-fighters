@@ -8,6 +8,8 @@ func process(delta: float) -> void:
 	if input_direction.length() == 0:
 		state_machine.transition_to("Idle")
 		return
+	if Input.is_action_pressed("move_dash"):
+		state_machine.transition_to("Dash");
 	owner.facing = input_direction
 	var vel = calculate_velocity(delta, input_direction)
 	owner.move_and_slide(vel)
@@ -25,11 +27,20 @@ func exit():
 	pass
 
 func set_animation(input_direction: Vector2):
-	if input_direction.y == 1 and input_direction.x == 0:
-		owner.play_animation("Walk_Down")
-	if input_direction.y == -1 and input_direction.x == 0:
-		owner.play_animation("Walk_Up")
-	if input_direction.x == 1:
-		owner.play_animation("Walk_Right")
-	if input_direction.x == -1:
-		owner.play_animation("Walk_Left")
+	match input_direction:
+		Vector2(0, 1):
+			owner.play_animation("Walk_Down")
+		Vector2(0, -1):
+			owner.play_animation("Walk_Up")
+		Vector2(1, 0):
+			owner.play_animation("Walk_Right")
+		Vector2(1, 1):
+			owner.play_animation("Walk_Right")
+		Vector2(1, -1):
+			owner.play_animation("Walk_Right")
+		Vector2(-1, 0):
+			owner.play_animation("Walk_Left")
+		Vector2(-1, 1):
+			owner.play_animation("Walk_Left")
+		Vector2(-1, -1):
+			owner.play_animation("Walk_Left")
