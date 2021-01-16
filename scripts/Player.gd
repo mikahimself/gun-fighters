@@ -6,6 +6,8 @@ var dash_speed = 100
 var speed = 0
 var facing := Vector2(1, 0)
 var acceleration = 0.5
+var canDash = true
+
 onready var state_label = $StateLabel
 onready var rays = $Rays.get_children()
 
