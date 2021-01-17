@@ -69,7 +69,7 @@ func place_player() -> void:
 	for x in range(6, map_size.x / 2+ 6):
 		for y in range(6, map_size.y):
 			if $Navigation2D/TileMapSand.get_cell(x, y) == 0 and check_surroundings(x, y):
-				plr.position = $Navigation2D/TileMapSand.map_to_world(Vector2(x, y)) + Vector2(8, 8)
+				plr.position = $Navigation2D/TileMapSand.map_to_world(Vector2(x, y))
 				foundPosition = true
 			if (foundPosition):
 				print("placed player at ", plr.position)

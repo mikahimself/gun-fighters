@@ -15,6 +15,12 @@ func setup_dash_timer():
 	add_child(dieTimer)
 	dieTimer.start()
 
+func process(delta):
+	if owner.facing.y > 0:
+		owner.move_and_slide(owner.speed * 0.5 * owner.facing.normalized())
+	else:
+		owner.move_and_slide(owner.speed * 0.25 * owner.facing.normalized())
+
 func _on_fall_timeout():
 	state_machine.transition_to("Idle")
 	print("fall timeout")

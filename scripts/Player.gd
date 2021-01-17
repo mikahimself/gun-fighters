@@ -42,5 +42,5 @@ func play_animation(animation: String) -> void:
 	$AnimationPlayer.play(animation)
 
 func get_map_position() -> int:
-	var pos = tilemap.world_to_map(position)
+	var pos = tilemap.world_to_map(position + Vector2(0, 6))
 	return tilemap.get_cell(pos.x, pos.y)

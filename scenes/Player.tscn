@@ -36,10 +36,10 @@ tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"times": PoolRealArray( 0, 2 ),
+"times": PoolRealArray( 0, 1 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 0,
-"values": [ Vector2( 1, 1 ), Vector2( 0.1, 0.1 ) ]
+"values": [ Vector2( 1, 1 ), Vector2( 0, 0 ) ]
 }
 
 [sub_resource type="Animation" id=3]
@@ -181,7 +181,6 @@ tracks/0/keys = {
 }
 
 [node name="Player" type="KinematicBody2D"]
-position = Vector2( 42.7709, 27.5004 )
 script = ExtResource( 4 )
 
 [node name="Sprite" type="Sprite" parent="."]
@@ -191,7 +190,6 @@ hframes = 10
 frame = 10
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-visible = false
 position = Vector2( 0, 4 )
 rotation = 1.5708
 shape = SubResource( 1 )
