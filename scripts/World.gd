@@ -4,6 +4,8 @@ var noise: OpenSimplexNoise
 var map_size: Vector2 = Vector2(36, 36)
 var sand_cap: float = 0.5
 var path_caps: Vector2 = Vector2(0.225, 0.05)
+onready var player = load("res://scenes/Player.tscn")
+var plr
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -24,12 +26,14 @@ func clear_maps():
 	$Navigation2D/TileMapSand.clear()
 	$TileMapPaths.clear()
 	$TileMap.clear()
+	plr.queue_free()
 
 func draw_maps():
 	noise.seed = randi()
 	create_sand_map()
 	create_path_map()
 	create_background_map()
+	place_player()
 
 func create_sand_map(): 
 	for x in map_size.x:
@@ -57,3 +61,23 @@ func create_background_map() -> void:
 
 func check_edges(x: int, y: int) -> bool:
 	return x == 0 or x == map_size.x - 1 or y == 0 or y == map_size.y - 1
+
+func place_player() -> void:
+	plr = player.instance()
+	var foundPosition = false
+
+	for x in range(6, map_size.x / 2+ 6):
+		for y in range(6, map_size.y):
+			if $Navigation2D/TileMapSand.get_cell(x, y) == 0:
+				plr.position = $Navigation2D/TileMapSand.map_to_world(Vector2(x, y))
+				foundPosition = true
+			if (foundPosition):
+				print("placed player at ", plr.position)
+				break
+		if (foundPosition):
+			print("placed player at ", plr.position)
+			break
+	if (foundPosition):
+		add_child(plr)
+	else:
+		print("Couldnt fin pos")

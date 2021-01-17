@@ -17,6 +17,9 @@ func process(delta: float) -> void:
 		var collision = owner.get_slide_collision(i)
 	set_animation(input_direction)
 	owner.check_borders()
+	var pos = owner.get_map_position()
+	if pos < 0:
+		state_machine.transition_to("Fall");
 	
 func calculate_velocity(delta: float, _input_direction: Vector2) -> Vector2:
 	_input_direction = _input_direction.normalized()

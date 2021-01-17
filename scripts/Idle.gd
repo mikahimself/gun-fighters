@@ -20,11 +20,13 @@ func process(delta: float) -> void:
 		slow_down(delta)
 	check_ledge()
 
-func check_ledge() -> void:
+func check_ledge() -> bool:
 	var rays = owner.rays
 	for ray in rays:
 		if ray.is_colliding():
 			state_machine.transition_to("OnLedge", { "ray": ray.name} )
+			return true
+	return false
 
 func slow_down(delta) -> void:
 	if slow_down_elapsed < slow_down_time:
