@@ -10,12 +10,13 @@ func process(delta: float) -> void:
 	var input_direction = get_input_direction()
 	if input_direction:
 		state_machine.transition_to("Move")
-	
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	pass # Replace with function body.
+	if not check_ledge():
+		state_machine.transition_to("Idle")
 
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
+func check_ledge() -> bool:
+	var rays = owner.rays
+	for ray in rays:
+		if ray.is_colliding():
+			state_machine.transition_to("OnLedge", { "ray": ray.name} )
+			return true
+	return false
