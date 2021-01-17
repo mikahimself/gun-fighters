@@ -10,8 +10,10 @@ func process(delta: float) -> void:
 	var input_direction = get_input_direction()
 	if input_direction:
 		state_machine.transition_to("Move")
+		return
 	if not check_ledge():
 		state_machine.transition_to("Idle")
+		return
 
 func check_ledge() -> bool:
 	var rays = owner.rays
