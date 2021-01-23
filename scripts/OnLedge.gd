@@ -19,6 +19,6 @@ func check_ledge() -> bool:
 	var rays = owner.rays
 	for ray in rays:
 		if ray.is_colliding():
-			state_machine.transition_to("OnLedge", { "ray": ray.name} )
+			#state_machine.transition_to("OnLedge", { "ray": ray.name} )
 			return true
 	return false
