@@ -9,6 +9,8 @@ var acceleration = 0.5
 var canDash = true
 var tilemap: TileMap
 var initial_position
+var offset_x = 32
+var offset_y = 16
 
 onready var state_label = $StateLabel
 onready var rays = $Rays.get_children()
@@ -19,23 +21,20 @@ func _ready():
 	$StateMachine.connect("transitioned", self, "on_state_transitioned")
 	tilemap = get_tree().get_root().get_node("World/Navigation2D/TileMapSand")
 
-
 func on_state_transitioned(state: String):
 	state_label.set_text(state)
 
 func check_borders() -> void:
-	if position.x < 8:
-		position.x = 8
-	if position.x > 472:
-		position.x = 472
-	if position.y > 312:
-		position.y = 312
-	if position.y < 8:
-		position.y = 8
+	if position.x < 8 + offset_x:
+		position.x = 8 + offset_x
+	if position.x > 472 + offset_x:
+		position.x = 472 + offset_x
+	if position.y > 312 + offset_y:
+		position.y = 312 + offset_y
+	if position.y < 8 + offset_y:
+		position.y = 8 + offset_y
 
 func _physics_process(delta: float) -> void:
-	#if ray_right.is_colliding():
-	#	print(ray_right.get_collider().name)
 	pass
 
 func play_animation(animation: String) -> void:

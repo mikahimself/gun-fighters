@@ -11,7 +11,7 @@
 
 [sub_resource type="CapsuleShape2D" id=1]
 radius = 2.60929
-height = 9.25867
+height = 5.65132
 
 [sub_resource type="Animation" id=2]
 resource_name = "Fall"
@@ -190,7 +190,7 @@ hframes = 10
 frame = 10
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2( 0, 4 )
+position = Vector2( 0, 5.99713 )
 rotation = 1.5708
 shape = SubResource( 1 )
 
@@ -224,6 +224,7 @@ __meta__ = {
 }
 
 [node name="Rays" type="Node2D" parent="."]
+visible = false
 
 [node name="RayUp" type="RayCast2D" parent="Rays"]
 position = Vector2( 0, 6 )
