@@ -5,6 +5,8 @@ var map_size: Vector2 = Vector2(34, 24)
 var sand_cap: float = 0.5
 var path_attempt_max: int = 32
 var path_caps: Vector2 = Vector2(0.225, 0.05)
+var start_positions = []
+
 onready var nav2d = $Navigation2D
 onready var sand_map = $Navigation2D/TileMapSand
 onready var path_map = $Navigation2D/TileMapPaths
@@ -29,7 +31,7 @@ func on_base_finished():
 	create_path_map()
 
 func _input(event):
-	if event.is_action_pressed("ui_accept"):
+	if event.is_action_pressed("redraw_map"):
 		clear_maps()
 		draw_maps()
 	if event.is_action_pressed("draw_roads"):
@@ -49,8 +51,11 @@ func draw_maps():
 	noise.seed = randi()
 	create_sand_map()
 	create_background_map()
-	place_player()
 	place_props()
+	var can_place = place_players(2)
+	if not can_place:
+		clear_maps()
+		draw_maps()
 
 func place_props():
 	for x in map_size.x:
@@ -140,34 +145,38 @@ func place_cactus(place_position: Vector2) -> void:
 	c.position = place_position
 	$YSort.add_child(c)
 
-func place_player() -> void:
+func place_players(number: int) -> bool:
+	var placed_ok = false
+	if number == 1:
+		placed_ok = place_player(1)
+	else:
+		placed_ok = place_player(1) && place_player(2)
+		#placed_ok = place_player(2)
+
+	return placed_ok
+		
+
+func place_player(id: int) -> bool:
+	var start_x = 3.0 if id == 1 else (map_size.x - 3)
+	var end_x = (map_size.x / 2) - 3 if id == 1 else (map_size.x + 3)
+
 	plr = player.instance()
 	var foundPosition = false
 
-	for x in range(6, map_size.x / 2+ 6):
-		for y in range(6, map_size.y):
+	for x in range(start_x, end_x):
+		for y in range(4, map_size.y):
 			if sand_map.get_cell(x, y) == 0 and check_surroundings(x, y):
 				plr.position = sand_map.map_to_world(Vector2(x, y))
 				foundPosition = true
-			if (foundPosition):
-				print("placed player at ", plr.position)
-				break
-		if (foundPosition):
-			print("placed player at ", plr.position)
-			break
-	if (foundPosition):
-		$YSort.add_child(plr)
-	else:
-		print("Couldnt fin pos")
-
+				$YSort.add_child(plr)
+				return foundPosition
+	return foundPosition
+		
 func check_surroundings(x: int, y:int) -> bool:
 	var placeOK = true
-	if sand_map.get_cell(x - 1, y) == -1:
-		placeOK = false
-	if sand_map.get_cell(x + 1, y) == -1:
-		placeOK = false
-	if sand_map.get_cell(x, y - 1) == -1:
-		placeOK = false
-	if sand_map.get_cell(x, y + 1) == -1:
-		placeOK = false
+
+	for spotX in range(x - 2, x + 2):
+		for spotY in range(y - 2, y + 2):
+			if sand_map.get_cell(spotX, spotY) == -1 || sand_map.get_cell_autotile_coord(x, y) == Vector2(7, 5):
+				placeOK = false
 	return placeOK
