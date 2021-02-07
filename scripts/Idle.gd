@@ -22,10 +22,13 @@ func process(delta: float) -> void:
 
 func check_ledge() -> bool:
 	var rays = owner.rays
+	var colliding_rays = []
 	for ray in rays:
 		if ray.is_colliding():
-			state_machine.transition_to("OnLedge", { "ray": ray.name} )
-			return true
+			colliding_rays.append(ray.name)
+	if (colliding_rays.size() > 0):
+		state_machine.transition_to("OnLedge", { "rays": colliding_rays} )
+		return true
 	return false
 
 func slow_down(delta) -> void:

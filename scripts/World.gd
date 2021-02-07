@@ -162,12 +162,12 @@ func place_player() -> void:
 
 func check_surroundings(x: int, y:int) -> bool:
 	var placeOK = true
-	if sand_map.get_cell(x - 1, y) == -1:
+	if sand_map.get_cell(x - 2, y) == -1:
 		placeOK = false
-	if sand_map.get_cell(x + 1, y) == -1:
+	if sand_map.get_cell(x + 2, y) == -1:
 		placeOK = false
-	if sand_map.get_cell(x, y - 1) == -1:
+	if sand_map.get_cell(x, y - 2) == -1:
 		placeOK = false
-	if sand_map.get_cell(x, y + 1) == -1:
+	if sand_map.get_cell(x, y + 2) == -1:
 		placeOK = false
 	return placeOK
