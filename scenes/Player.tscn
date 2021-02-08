@@ -171,7 +171,7 @@ tracks/1/keys = {
 "values": [ Vector2( 0, 0 ) ]
 }
 
-[sub_resource type="Animation" id=12]
+[sub_resource type="Animation" id=6]
 resource_name = "Ledge-Left"
 length = 0.4
 loop = true
@@ -200,7 +200,7 @@ tracks/1/keys = {
 "values": [ Vector2( -2, 0 ) ]
 }
 
-[sub_resource type="Animation" id=11]
+[sub_resource type="Animation" id=7]
 resource_name = "Ledge-Right"
 length = 0.4
 loop = true
@@ -229,7 +229,7 @@ tracks/1/keys = {
 "values": [ Vector2( 2, 0 ) ]
 }
 
-[sub_resource type="Animation" id=10]
+[sub_resource type="Animation" id=8]
 resource_name = "Ledge-Up"
 length = 0.4
 loop = true
@@ -258,7 +258,7 @@ tracks/1/keys = {
 "values": [ Vector2( 0, 0 ) ]
 }
 
-[sub_resource type="Animation" id=6]
+[sub_resource type="Animation" id=9]
 length = 0.8
 loop = true
 tracks/0/type = "value"
@@ -286,7 +286,7 @@ tracks/1/keys = {
 "values": [ Vector2( 0, 0 ) ]
 }
 
-[sub_resource type="Animation" id=7]
+[sub_resource type="Animation" id=10]
 length = 0.8
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
@@ -313,7 +313,7 @@ tracks/1/keys = {
 "values": [ Vector2( 0, 0 ) ]
 }
 
-[sub_resource type="Animation" id=8]
+[sub_resource type="Animation" id=11]
 length = 0.8
 loop = true
 tracks/0/type = "value"
@@ -341,7 +341,7 @@ tracks/1/keys = {
 "values": [ Vector2( 0, 0 ) ]
 }
 
-[sub_resource type="Animation" id=9]
+[sub_resource type="Animation" id=12]
 length = 0.8
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
@@ -375,7 +375,7 @@ script = ExtResource( 4 )
 texture = ExtResource( 1 )
 vframes = 8
 hframes = 10
-frame = 1
+frame = 40
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2( 0, 5.5 )
@@ -448,10 +448,10 @@ anims/Fall = SubResource( 2 )
 anims/Idle_Down = SubResource( 3 )
 anims/Idle_Up = SubResource( 4 )
 anims/Ledge-Down = SubResource( 5 )
-anims/Ledge-Left = SubResource( 12 )
-anims/Ledge-Right = SubResource( 11 )
-anims/Ledge-Up = SubResource( 10 )
-anims/Walk_Down = SubResource( 6 )
-anims/Walk_Left = SubResource( 7 )
-anims/Walk_Right = SubResource( 8 )
-anims/Walk_Up = SubResource( 9 )
+anims/Ledge-Left = SubResource( 6 )
+anims/Ledge-Right = SubResource( 7 )
+anims/Ledge-Up = SubResource( 8 )
+anims/Walk_Down = SubResource( 9 )
+anims/Walk_Left = SubResource( 10 )
+anims/Walk_Right = SubResource( 11 )
+anims/Walk_Up = SubResource( 12 )
