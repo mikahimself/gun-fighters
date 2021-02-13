@@ -11,6 +11,7 @@ func process(delta: float) -> void:
 	if Input.is_action_pressed("move_dash") and owner.canDash:
 		state_machine.transition_to("Dash");
 	owner.facing = input_direction
+	owner.previous_direction = input_direction
 	var vel = calculate_velocity(delta, input_direction)
 	owner.move_and_slide(vel)
 	for i in owner.get_slide_count():

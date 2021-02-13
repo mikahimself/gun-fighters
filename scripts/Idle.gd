@@ -21,13 +21,18 @@ func process(delta: float) -> void:
 	check_ledge()
 
 func check_ledge() -> bool:
-	var rays = owner.rays
-	var colliding_rays = []
-	for ray in rays:
-		if ray.is_colliding():
-			colliding_rays.append(ray.name)
-	if (colliding_rays.size() > 0):
-		state_machine.transition_to("OnLedge", { "rays": colliding_rays} )
+	var offset = 5
+	var positions = [owner.position + Vector2(-offset,  6), 
+										owner.position + Vector2(offset,  6),
+										owner.position + Vector2(0, -offset + 6),
+										owner.position + Vector2(0,  offset + 6)]
+	var edges = []
+	for x in positions.size():
+		var map_pos = owner.tilemap.world_to_map(positions[x])
+		if owner.tilemap.get_cell(map_pos.x, map_pos.y) == -1:
+			edges.append(x)
+	if (edges.size() > 0):
+		state_machine.transition_to("OnLedge", { "edges": edges} )
 		return true
 	return false
 

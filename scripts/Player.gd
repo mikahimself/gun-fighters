@@ -5,12 +5,14 @@ var max_speed = 35
 var dash_speed = 100
 var speed = 0
 var facing := Vector2(1, 0)
+var previous_direction: Vector2
 var acceleration = 0.5
 var canDash = true
 var tilemap: TileMap
 var initial_position
 var offset_x = 32
 var offset_y = 16
+var tilepos
 
 onready var state_label = $StateLabel
 onready var rays = $Rays.get_children()
@@ -35,7 +37,7 @@ func check_borders() -> void:
 		position.y = 8 + offset_y
 
 func _physics_process(delta: float) -> void:
-	pass
+	tilepos = tilemap.world_to_map(position)
 
 func play_animation(animation: String) -> void:
 	$AnimationPlayer.play(animation)
