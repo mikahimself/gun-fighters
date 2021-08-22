@@ -464,10 +464,6 @@ offset = Vector2( 0, 6 )
 [node name="BulletSpawner" type="Node2D" parent="."]
 script = ExtResource( 10 )
 
-[node name="Sprite" type="Sprite" parent="BulletSpawner"]
-z_index = 200
-texture = ExtResource( 9 )
-
 [node name="CooldownTimer" type="Timer" parent="BulletSpawner"]
 wait_time = 0.25
 one_shot = true
