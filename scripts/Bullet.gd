@@ -1,20 +1,16 @@
-extends KinematicBody2D
+extends Area2D
 
 var direction = Vector2()
-export var speed = 150
+export var speed = 175
 
 func _ready():
-	# Untie from player movement
-	self.set_as_toplevel(true)
+	pass
 
 func _process(delta):
 	if is_outside_view_bounds():
 		queue_free()
-
 	var motion = direction * speed * delta
-	var collision_info = move_and_collide(motion)
-	if collision_info:
-		queue_free()
+	translate(motion)
 
 func is_outside_view_bounds():
 	return position.x > OS.get_screen_size().x or \

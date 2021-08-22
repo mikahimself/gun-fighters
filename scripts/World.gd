@@ -52,7 +52,7 @@ func draw_maps():
 	create_sand_map()
 	create_background_map()
 	place_props()
-	var can_place = place_players(2)
+	var can_place = place_players(1)
 	if not can_place:
 		clear_maps()
 		draw_maps()
