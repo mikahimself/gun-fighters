@@ -4,11 +4,12 @@ var bullet = preload("res://scenes/Bullet.tscn")
 
 func _input(event):
 	if event.is_action_pressed("shoot"):
-		print("shooty shoot", owner.facing_direction)
-		fire(owner.facing_direction)
+		print("shooty shoot", owner.facing)
+		fire(owner.facing)
 
 func fire(direction):
 	var new_bullet = bullet.instance()
 	new_bullet.direction = direction
-	new_bullet.position = 15 * direction
+	new_bullet.rotation = direction.angle()
+	new_bullet.position =  self.global_position + 10 * direction
 	add_child(new_bullet)

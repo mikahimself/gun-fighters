@@ -6,12 +6,13 @@ func enter(_msg := {}) -> void:
 func process(delta: float) -> void:
 	var input_direction = get_input_direction()
 	
-	owner.facing_direction = input_direction
 	if input_direction.length() == 0:
 		state_machine.transition_to("Idle")
 		return
+	
 	if Input.is_action_pressed("move_dash") and owner.canDash:
 		state_machine.transition_to("Dash");
+	
 	owner.facing = input_direction
 	owner.previous_direction = input_direction
 	var vel = calculate_velocity(delta, input_direction)

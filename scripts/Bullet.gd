@@ -1,16 +1,23 @@
 extends KinematicBody2D
 
 var direction = Vector2()
-export var speed = 200
+export var speed = 150
 
-# Called when the node enters the scene tree for the first time.
 func _ready():
-	set_as_toplevel(true)
+	# Untie from player movement
+	self.set_as_toplevel(true)
 
 func _process(delta):
+	if is_outside_view_bounds():
+		queue_free()
+
 	var motion = direction * speed * delta
 	var collision_info = move_and_collide(motion)
-
+	if collision_info:
+		queue_free()
 
 func is_outside_view_bounds():
-	pass
+	return position.x > OS.get_screen_size().x or \
+			position.x < 0.0 or \
+			position.y > OS.get_screen_size().y or \
+			position.y < 0.0
