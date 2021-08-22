@@ -16,6 +16,7 @@ var tilepos
 
 onready var state_label = $StateLabel
 onready var rays = $Rays.get_children()
+var facing_direction = Vector2()
 
 # Called when the node enters the scene tree for the first time.
 func _ready():

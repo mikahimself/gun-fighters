@@ -5,6 +5,8 @@ func enter(_msg := {}) -> void:
 
 func process(delta: float) -> void:
 	var input_direction = get_input_direction()
+	
+	owner.facing_direction = input_direction
 	if input_direction.length() == 0:
 		state_machine.transition_to("Idle")
 		return
