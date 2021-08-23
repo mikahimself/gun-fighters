@@ -2,10 +2,11 @@ extends Node2D
 
 var noise: OpenSimplexNoise
 var map_size: Vector2 = Vector2(34, 24)
-var sand_cap: float = 0.5
+var sand_cap: float = 0.475
 var path_attempt_max: int = 32
 var path_caps: Vector2 = Vector2(0.225, 0.05)
 var start_positions = []
+var houses = []
 
 onready var nav2d = $Navigation2D
 onready var sand_map = $Navigation2D/TileMapSand
@@ -13,6 +14,7 @@ onready var path_map = $Navigation2D/TileMapPaths
 onready var prop_map = $Navigation2D/TileMapProps
 onready var player = load("res://scenes/Player.tscn")
 onready var cactus = load("res://scenes/Cactus.tscn")
+onready var house = load("res://scenes/House.tscn")
 var plr
 signal basemap_finished
 
@@ -42,6 +44,7 @@ func clear_maps():
 	sand_map.clear()
 	path_map.clear()
 	prop_map.clear()
+	houses = []
 	$TileMap.clear()
 	plr.queue_free()
 	for child in $YSort.get_children():
@@ -51,25 +54,38 @@ func draw_maps():
 	noise.seed = randi()
 	create_sand_map()
 	create_background_map()
-	place_props()
-	var can_place = place_players(1)
-	if not can_place:
-		clear_maps()
-		draw_maps()
+	#place_props()
+	# var can_place = place_players(2)
+	# if not can_place:
+	# 	clear_maps()
+	# 	draw_maps()
 
 func place_props():
+	print("place props")
 	for x in map_size.x:
 		for y in map_size.y:
-			if sand_map.get_cell_autotile_coord(x, y) == Vector2(7, 5):
+			if sand_map.get_cell_autotile_coord(x, y) == Vector2(7, 5) and rand_range(0, 1) < 0.35:
 				place_cactus(sand_map.map_to_world(Vector2(x, y)))
+			if sand_map.get_cell_autotile_coord(x, y) == Vector2(8, 2) and rand_range(0, 1) < 0.35:
+				place_house(sand_map.map_to_world(Vector2(x, y)))
 
-func create_sand_map(): 
+func create_sand_map():
+	print("Create sand map")
 	for x in map_size.x:
 		for y in map_size.y:
 			var val = noise.get_noise_2d(x, y)
 			if val < sand_cap:
 				sand_map.set_cell(x, y, 0)
 	update_bitmask(sand_map)
+	for x in map_size.x - 1:
+		sand_map.set_cell(x, 0, -1)
+		sand_map.set_cell(x, map_size.y - 1, -1)
+	for y in map_size.y - 1:
+		sand_map.set_cell(0, y, -1)
+		sand_map.set_cell(map_size.x - 1, y, -1)
+	
+
+
 	yield(get_tree().create_timer(0.015), "timeout")
 	emit_signal("basemap_finished")
 
@@ -79,6 +95,7 @@ func create_path_points(isVertical: bool) -> PoolVector2Array:
 	var start = create_path_point(isVertical, false)
 	var end = create_path_point(isVertical, true)
 	path = nav2d.get_simple_path(start, end, false)
+	print("Start: ", start, " End: ", end)
 
 	while path.size() < 20 && counter < path_attempt_max:
 		start = create_path_point(isVertical, false)
@@ -107,13 +124,20 @@ func create_path_point(is_vertical_path: bool, is_end_point: bool):
 	return path_map.map_to_world(Vector2(start_x, start_y))
 
 func create_path_map():
+	print("Create path map")
 	var h_path = create_path_points(false)
 	var v_path = create_path_points(true)
 	place_path_points(h_path)
 	place_path_points(v_path)
 	update_bitmask(path_map)
+	place_props()
+	var can_place = place_players(2)
+	if not can_place:
+		clear_maps()
+		draw_maps()
 
 func place_path_points(path: PoolVector2Array):
+	print("place path points")
 	for i in path.size():
 		if i > 0:
 			var prev = path_map.world_to_map(path[i - 1])
@@ -145,6 +169,24 @@ func place_cactus(place_position: Vector2) -> void:
 	c.position = place_position
 	$YSort.add_child(c)
 
+func place_house(place_position: Vector2) -> void:
+	var tilePos = sand_map.world_to_map(place_position)
+	if houses.size() > 3 or houses.has(place_position):
+		return
+	for item in houses:
+		if (item.distance_to(place_position) < 160):
+			return
+	for y in range(tilePos.y - 1, tilePos.y + 1):
+		for x in range(tilePos.x - 2, tilePos.x + 2):
+			var roadTile = path_map.get_cell_autotile_coord(x, y)
+			var groundTile = sand_map.get_cell(x, y)
+			if (roadTile != Vector2.ZERO or groundTile == -1):
+				return
+	var h = house.instance()
+	h.position = place_position
+	houses.append(place_position)
+	$YSort.add_child(h)
+
 func place_players(number: int) -> bool:
 	var placed_ok = false
 	if number == 1:
@@ -166,7 +208,15 @@ func place_player(id: int) -> bool:
 	for x in range(start_x, end_x):
 		for y in range(4, map_size.y):
 			if sand_map.get_cell(x, y) == 0 and check_surroundings(x, y):
+				if (id == 2):
+					print("starttipos")
+					#var plr_path = nav2d.get_simple_path(Vector2(start_positions[0].x, start_positions[0].y), sand_map.map_to_world(Vector2(x, y)), true)
+					var plr_path = nav2d.get_simple_path(Vector2(start_positions[0].x, start_positions[0].y), sand_map.map_to_world(Vector2(x, y)), false)
+					print("polku: ", plr_path.size())
+					if plr_path.size() == 0:
+						return false
 				plr.position = sand_map.map_to_world(Vector2(x, y))
+				start_positions.append(sand_map.map_to_world(Vector2(x, y)))
 				foundPosition = true
 				$YSort.add_child(plr)
 				return foundPosition
