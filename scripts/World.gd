@@ -13,6 +13,7 @@ onready var sand_map = $Navigation2D/TileMapSand
 onready var path_map = $Navigation2D/TileMapPaths
 onready var prop_map = $Navigation2D/TileMapProps
 onready var player = load("res://scenes/Player.tscn")
+onready var enemy = load("res://scenes/Enemy.tscn")
 onready var cactus = load("res://scenes/Cactus.tscn")
 onready var house = load("res://scenes/House.tscn")
 var plr
@@ -131,7 +132,7 @@ func create_path_map():
 	place_path_points(v_path)
 	update_bitmask(path_map)
 	place_props()
-	var can_place = place_players(2)
+	var can_place = place_players(1)
 	if not can_place:
 		clear_maps()
 		draw_maps()
@@ -190,10 +191,9 @@ func place_house(place_position: Vector2) -> void:
 func place_players(number: int) -> bool:
 	var placed_ok = false
 	if number == 1:
-		placed_ok = place_player(1)
+		placed_ok = place_player(1) && place_enemy(2)
 	else:
 		placed_ok = place_player(1) && place_player(2)
-		#placed_ok = place_player(2)
 
 	return placed_ok
 		
@@ -210,7 +210,29 @@ func place_player(id: int) -> bool:
 		for y in range(4, map_size.y):
 			if sand_map.get_cell(x, y) == 0 and check_surroundings(x, y):
 				if (id == 2):
-					#var plr_path = nav2d.get_simple_path(Vector2(start_positions[0].x, start_positions[0].y), sand_map.map_to_world(Vector2(x, y)), true)
+					var plr_path = nav2d.get_simple_path(Vector2(start_positions[0].x, start_positions[0].y), sand_map.map_to_world(Vector2(x, y)), false)
+					print("polku: ", plr_path.size())
+					if plr_path.size() == 0:
+						return false
+				plr.position = sand_map.map_to_world(Vector2(x, y))
+				start_positions.append(sand_map.map_to_world(Vector2(x, y)))
+				foundPosition = true
+				$YSort.add_child(plr)
+				return foundPosition
+	return foundPosition
+
+func place_enemy(id: int) -> bool:
+	var start_x = 3.0 if id == 1 else (map_size.x - 3)
+	var end_x = (map_size.x / 2) - 3 if id == 1 else (map_size.x + 3)
+
+	plr = enemy.instance()
+	#plr.playerID = id
+	var foundPosition = false
+
+	for x in range(start_x, end_x):
+		for y in range(4, map_size.y):
+			if sand_map.get_cell(x, y) == 0 and check_surroundings(x, y):
+				if (id == 2):
 					var plr_path = nav2d.get_simple_path(Vector2(start_positions[0].x, start_positions[0].y), sand_map.map_to_world(Vector2(x, y)), false)
 					print("polku: ", plr_path.size())
 					if plr_path.size() == 0:
