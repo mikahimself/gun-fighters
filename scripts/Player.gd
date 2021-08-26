@@ -4,6 +4,7 @@ var myVelocity = Vector2.ZERO
 var max_speed = 35
 var dash_speed = 100
 var speed = 0
+var playerID = 0;
 var facing := Vector2(1, 0)
 var previous_direction: Vector2
 var acceleration = 0.5

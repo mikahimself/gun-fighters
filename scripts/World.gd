@@ -203,13 +203,13 @@ func place_player(id: int) -> bool:
 	var end_x = (map_size.x / 2) - 3 if id == 1 else (map_size.x + 3)
 
 	plr = player.instance()
+	plr.playerID = id
 	var foundPosition = false
 
 	for x in range(start_x, end_x):
 		for y in range(4, map_size.y):
 			if sand_map.get_cell(x, y) == 0 and check_surroundings(x, y):
 				if (id == 2):
-					print("starttipos")
 					#var plr_path = nav2d.get_simple_path(Vector2(start_positions[0].x, start_positions[0].y), sand_map.map_to_world(Vector2(x, y)), true)
 					var plr_path = nav2d.get_simple_path(Vector2(start_positions[0].x, start_positions[0].y), sand_map.map_to_world(Vector2(x, y)), false)
 					print("polku: ", plr_path.size())

@@ -10,7 +10,7 @@ func process(delta: float) -> void:
 		state_machine.transition_to("Idle")
 		return
 	
-	if Input.is_action_pressed("move_dash") and owner.canDash:
+	if Input.is_action_pressed("move_dash_%s" % owner.playerID) and owner.canDash:
 		state_machine.transition_to("Dash");
 	
 	owner.facing = input_direction

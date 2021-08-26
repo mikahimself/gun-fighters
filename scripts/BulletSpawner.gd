@@ -4,7 +4,7 @@ var bullet = preload("res://scenes/Bullet.tscn")
 onready var world = get_node("/root/World")
 
 func _input(event):
-	if event.is_action_pressed("shoot"):
+	if event.is_action_pressed("shoot_%s" %owner.playerID):
 		fire(owner.facing)
 
 func fire(direction):
