@@ -17,6 +17,7 @@ onready var enemy = load("res://scenes/Enemy.tscn")
 onready var cactus = load("res://scenes/Cactus.tscn")
 onready var house = load("res://scenes/House.tscn")
 var plr
+var cpu
 signal basemap_finished
 
 # Called when the node enters the scene tree for the first time.
@@ -132,6 +133,7 @@ func create_path_map():
 	place_path_points(v_path)
 	update_bitmask(path_map)
 	place_props()
+	#update_bitmask(sand_map)
 	var can_place = place_players(1)
 	if not can_place:
 		clear_maps()
@@ -185,6 +187,9 @@ func place_house(place_position: Vector2) -> void:
 				return
 	var h = house.instance()
 	h.position = place_position
+	var place_map = sand_map.world_to_map(place_position)
+	var place_map_1 = Vector2(place_map.x - 1, place_map.y)
+	sand_map.set_cell(place_map_1.x, place_map_1.y, 0, false, false, false, Vector2(8, 2))
 	houses.append(place_position)
 	$YSort.add_child(h)
 
@@ -225,8 +230,8 @@ func place_enemy(id: int) -> bool:
 	var start_x = 3.0 if id == 1 else (map_size.x - 3)
 	var end_x = (map_size.x / 2) - 3 if id == 1 else (map_size.x + 3)
 
-	plr = enemy.instance()
-	#plr.playerID = id
+	cpu = enemy.instance()
+	cpu.player = plr
 	var foundPosition = false
 
 	for x in range(start_x, end_x):
@@ -234,13 +239,12 @@ func place_enemy(id: int) -> bool:
 			if sand_map.get_cell(x, y) == 0 and check_surroundings(x, y):
 				if (id == 2):
 					var plr_path = nav2d.get_simple_path(Vector2(start_positions[0].x, start_positions[0].y), sand_map.map_to_world(Vector2(x, y)), false)
-					print("polku: ", plr_path.size())
 					if plr_path.size() == 0:
 						return false
-				plr.position = sand_map.map_to_world(Vector2(x, y))
+				cpu.position = sand_map.map_to_world(Vector2(x, y))
 				start_positions.append(sand_map.map_to_world(Vector2(x, y)))
 				foundPosition = true
-				$YSort.add_child(plr)
+				$YSort.add_child(cpu)
 				return foundPosition
 	return foundPosition
 		

@@ -1,12 +1,5 @@
 extends "res://scripts/EnemyMotion.gd"
 
-
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
-
-
-# Called when the node enters the scene tree for the first time.
 func _ready():
 	pass
 
@@ -14,13 +7,21 @@ func enter(_msg := {}) -> void:
 	print("Idle")
 
 func process(delta: float) -> void:
-	var input_direction = get_input_direction()
-	if input_direction:
-		state_machine.transition_to("Move")
+	var path = get_path_to_enemy()
+	if (path.size() > 0):
+		state_machine.transition_to("EnemyMove")
 		return
-	#if owner.speed > 0.1:
-	#	slow_down(delta)
-	#	check_ledge()
+
+func get_path_to_enemy():
+	var path = owner.navigation.get_simple_path(owner.position, Vector2(50, 50))
+
+	if path.size() > 0 and owner.position.distance_to(path[0]) < 10:
+		path.remove(0)
+
+	if path.size() > 1 and owner.position.distance_to(path[path.size() - 1]) < 10:
+		return []
+	else:
+		return path
 
 func exit() -> void:
 	pass

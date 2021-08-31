@@ -1,15 +1,22 @@
 extends KinematicBody2D
 
+var facing = Vector2(-1, 0)
+var max_speed = 35
+var dash_speed = 80
+var speed = 0
+var acceleration = 0.5
+var canDash = true
+var player
 
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
+onready var line2d = $Line2D
+onready var navigation = get_tree().get_root().get_node("World/Navigation2D")
+onready var myPath = get_tree().get_root().get_node("World/Line2D")
 
-
-# Called when the node enters the scene tree for the first time.
 func _ready():
-	pass # Replace with function body.
-
+	pass
 
 func _physics_process(delta: float) -> void:
-	pass#tilepos = tilemap.world_to_map(position)
+	pass
+
+func play_animation(animation: String) -> void:
+	$AnimationPlayer.play(animation)

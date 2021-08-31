@@ -3,11 +3,10 @@ extends Node
 
 signal transitioned(state_name)
 
-export var initial_state: NodePath# := NodePath()
+export var initial_state: NodePath
 onready var state: State = get_node(initial_state)
 
 
-# Called when the node enters the scene tree for the first time.
 func _ready():
 	#yield(owner, ready)
 	for child in get_children():
