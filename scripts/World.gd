@@ -134,7 +134,7 @@ func create_path_map():
 	update_bitmask(path_map)
 	place_props()
 	#update_bitmask(sand_map)
-	var can_place = place_players(1)
+	var can_place = place_players(0)
 	if not can_place:
 		clear_maps()
 		draw_maps()
@@ -195,7 +195,9 @@ func place_house(place_position: Vector2) -> void:
 
 func place_players(number: int) -> bool:
 	var placed_ok = false
-	if number == 1:
+	if number == 0:
+		placed_ok = place_player(1)
+	elif number == 1:
 		placed_ok = place_player(1) && place_enemy(2)
 	else:
 		placed_ok = place_player(1) && place_player(2)
@@ -232,6 +234,7 @@ func place_enemy(id: int) -> bool:
 
 	cpu = enemy.instance()
 	cpu.player = plr
+	cpu.map_size = map_size
 	var foundPosition = false
 
 	for x in range(start_x, end_x):

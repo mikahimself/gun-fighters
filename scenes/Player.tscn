@@ -404,6 +404,7 @@ script = ExtResource( 7 )
 script = ExtResource( 8 )
 
 [node name="StateLabel" type="Label" parent="."]
+visible = false
 margin_left = -14.0
 margin_top = -22.0
 margin_right = 14.0

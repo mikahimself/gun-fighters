@@ -4,7 +4,7 @@ var slow_down_time = 0.25
 var slow_down_elapsed = 0
 
 func enter(_msg := {}) -> void:
-	print("Idle")
+	print("Player Idle")
 	print(owner.facing)
 	if (owner.facing.y == -1):
 		owner.play_animation("Idle_Up")

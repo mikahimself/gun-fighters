@@ -1,27 +1,32 @@
 extends "res://scripts/EnemyMotion.gd"
 
+var can_move = false
+var idle_timer
+
 func _ready():
-	pass
+	idle_timer = Timer.new()
+	idle_timer.connect("timeout", self, "_on_IdleTimer_timeout")
+	idle_timer.one_shot = true
+	idle_timer.wait_time = 0.5
+	add_child(idle_timer)
 
 func enter(_msg := {}) -> void:
-	print("Idle")
+	print("Enemy Idle")
+	idle_timer.start()
+	
 
 func process(delta: float) -> void:
-	var path = get_path_to_enemy()
-	if (path.size() > 0):
-		state_machine.transition_to("EnemyMove")
-		return
-
-func get_path_to_enemy():
-	var path = owner.navigation.get_simple_path(owner.position, Vector2(50, 50))
-
-	if path.size() > 0 and owner.position.distance_to(path[0]) < 10:
-		path.remove(0)
-
-	if path.size() > 1 and owner.position.distance_to(path[path.size() - 1]) < 10:
-		return []
-	else:
-		return path
+	if (can_move):
+		update_path(true)
+		print("Updated path to ", path)
+		if (path.size() > 0):
+			state_machine.transition_to("EnemyMove", {"from": "idle"})
+			can_move = false
+			return
 
 func exit() -> void:
 	pass
+
+func _on_IdleTimer_timeout():
+	can_move = true
+	print("Idle timer out")

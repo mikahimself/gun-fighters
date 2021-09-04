@@ -1,24 +1,34 @@
 extends "res://scripts/EnemyMotion.gd"
 
-var path = []
-
-
 func _ready():
 	pass
 
 func enter(_msg := {}) -> void:
 	print("Movement")
-	path = owner.navigation.get_simple_path(owner.position, owner.player.position, false)
+	#print(_msg.from)
+	#print("Path size: ", path.size())
+	if _msg.from == "idle":
+		update_path(true)
+	elif path.size() == 0:
+		update_path(false)
+	owner.path_timer.start()
 
 func process(delta: float) -> void:
 	if path.size() > 0 and owner.position.distance_to(path[0]) < 10:
 		path.remove(0)
 		print("removed path item")
+		if path.size() < 5:
+			#update_path(true)
+			#owner.path_timer.start()
+			print("path too short, going idle")
+			print("Path is now ", path)
+			state_machine.transition_to("EnemyIdle")
+			return
 	owner.facing = get_direction()
 	owner.myPath.points = path
 
-
 	if owner.facing.length() == 0:
+		print("facing length 0, going idle")
 		state_machine.transition_to("EnemyIdle")
 		return
 
@@ -71,8 +81,6 @@ func set_animation(input_direction: Vector2):
 			owner.play_animation("Walk_Left")
 
 func exit() -> void:
-		pass
+	pass
 	
-func _on_PathTimer_timeout():
-	print("Time to update path")
-	path = owner.navigation.get_simple_path(owner.position, owner.player.position, false)
+
