@@ -3,7 +3,7 @@ extends KinematicBody2D
 var facing = Vector2(-1, 0)
 var prev_facing = Vector2.ZERO
 var map_size
-var max_speed = 35
+export var max_speed = 25
 var dash_speed = 80
 var speed = 0
 var acceleration = 0.5
