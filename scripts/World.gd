@@ -7,6 +7,7 @@ var path_attempt_max: int = 32
 var path_caps: Vector2 = Vector2(0.225, 0.05)
 var start_positions = []
 var houses = []
+export var mode = 0
 
 onready var nav2d = $Navigation2D
 onready var sand_map = $Navigation2D/TileMapSand
@@ -164,8 +165,8 @@ func create_background_map() -> void:
 					$TileMap.set_cell(x, y, 0)
 	#$TileMap.update_bitmask_region(Vector2.ZERO, Vector2(map_size.x, map_size.y))
 
-func check_edges(x: int, y: int) -> bool:
-	return x == 0 or x == map_size.x - 1 or y == 0 or y == map_size.y - 1
+#func check_edges(x: int, y: int) -> bool:
+#	return x == 0 or x == map_size.x - 1 or y == 0 or y == map_size.y - 1
 
 func place_cactus(place_position: Vector2) -> void:
 	var c = cactus.instance()
@@ -195,9 +196,9 @@ func place_house(place_position: Vector2) -> void:
 
 func place_players(number: int) -> bool:
 	var placed_ok = false
-	if number == 0:
+	if mode == 0:
 		placed_ok = place_player(1)
-	elif number == 1:
+	elif mode == 1:
 		placed_ok = place_player(1) && place_enemy(2)
 	else:
 		placed_ok = place_player(1) && place_player(2)

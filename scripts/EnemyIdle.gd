@@ -11,14 +11,13 @@ func _ready():
 	add_child(idle_timer)
 
 func enter(_msg := {}) -> void:
-	print("Enemy Idle")
+	print("Enter enemy Idle")
 	idle_timer.start()
 	
 
 func process(delta: float) -> void:
 	if (can_move):
 		update_path(true)
-		print("Updated path to ", path)
 		if (path.size() > 0):
 			state_machine.transition_to("EnemyMove", {"from": "idle"})
 			can_move = false

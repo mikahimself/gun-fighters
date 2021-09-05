@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=2]
+[gd_scene load_steps=24 format=2]
 
 [ext_resource path="res://sprites/character.png" type="Texture" id=1]
 [ext_resource path="res://scripts/StateMachine.gd" type="Script" id=2]
@@ -370,6 +370,10 @@ tracks/1/keys = {
 "values": [ Vector2( 0, 0 ) ]
 }
 
+[sub_resource type="CapsuleShape2D" id=13]
+radius = 5.54468
+height = 0.0
+
 [node name="Player" type="KinematicBody2D"]
 script = ExtResource( 4 )
 
@@ -379,7 +383,7 @@ hframes = 10
 vframes = 8
 frame = 40
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="GroundCollider" type="CollisionShape2D" parent="."]
 position = Vector2( 0, 6.3 )
 rotation = 1.5708
 shape = SubResource( 1 )
@@ -468,3 +472,7 @@ script = ExtResource( 10 )
 [node name="CooldownTimer" type="Timer" parent="BulletSpawner"]
 wait_time = 0.25
 one_shot = true
+
+[node name="BulletCollider" type="CollisionShape2D" parent="."]
+position = Vector2( 0.124855, 0.499435 )
+shape = SubResource( 13 )
