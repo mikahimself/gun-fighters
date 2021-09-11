@@ -11,7 +11,7 @@ func fire(direction):
 	if not $CooldownTimer.is_stopped():
 		return
 	$CooldownTimer.start()
-	var bullet_offset = 8 if (direction.y == 1) else 4
+	var bullet_offset = 10 if (direction.y == 1) else 10
 	var new_bullet = bullet.instance()
 	new_bullet.direction = direction
 	new_bullet.add_to_group("bullets")

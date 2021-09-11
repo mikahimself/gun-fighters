@@ -77,3 +77,6 @@ func fire(direction):
 	new_bullet.rotation = direction.angle()
 	new_bullet.position = self.global_position + bullet_offset * direction
 	world.add_child(new_bullet)
+
+func take_damage() -> void:
+	pass
