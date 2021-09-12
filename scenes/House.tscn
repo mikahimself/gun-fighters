@@ -4,7 +4,7 @@
 [ext_resource path="res://sprites/house-shadow.png" type="Texture" id=2]
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 12.8796, 10.1245 )
+extents = Vector2( 13, 7 )
 
 [node name="House" type="StaticBody2D" groups=[
 "Props",
@@ -16,7 +16,7 @@ collision_mask = 9
 texture = ExtResource( 1 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2( 0, 6 )
+position = Vector2( 0, 9 )
 shape = SubResource( 1 )
 
 [node name="Shadow" type="Sprite" parent="."]
